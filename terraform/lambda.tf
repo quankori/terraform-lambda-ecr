@@ -1,4 +1,4 @@
-resource "aws_lambda_function" "bogo-lambda-function" {
+resource "aws_lambda_function" "kori-lambda-function" {
   depends_on = [
     null_resource.ecr_image
   ]
@@ -12,14 +12,12 @@ resource "aws_lambda_function" "bogo-lambda-function" {
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.bogo-lambda-function.function_name
+  function_name = aws_lambda_function.kori-lambda-function.function_name
   principal     = "apigateway.amazonaws.com"
 
-  # The "/*/*" portion grants access from any method on any resource
-  # within the API Gateway REST API.
-  source_arn = "${aws_api_gateway_rest_api.bogo-gateway.execution_arn}/*/*"
+  source_arn = "${aws_api_gateway_rest_api.books.execution_arn}/*/*"
 }
 
 output "lambda_name" {
-  value = aws_lambda_function.bogo-lambda-function.id
+  value = aws_lambda_function.kori-lambda-function.id
 }
